@@ -1,34 +1,8 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-
-
-const Feedback = ({ good, neutral, bad, total, positivePercentage }) => (
-   <div>
-    {total > 0 ? (
-      <div>
-        <h2>Feedback Statistics</h2>
-        <p>Good: {good}</p>
-        <p>Neutral: {neutral}</p>
-        <p>Bad: {bad}</p>
-        <p>Total: {total}</p>
-        <p>Positive Percentage: {positivePercentage}%</p>
-      </div>
-    ) : (
-      <p>No feedback yet</p>
-    )}
-  </div>
-);
-
-const Options = ({ onFeedback, onReset, hasFeedback }) => {
-  return (
-    <div className="containerBtn">
-      <button className="btn" onClick={() => onFeedback('good')}>Good</button>
-      <button className="btn" onClick={() => onFeedback('neutral')}>Neutral</button>
-          <button className="btn" onClick={() => onFeedback('bad')}>Bad</button>
-      {hasFeedback && <button className="btn" onClick={onReset}>Reset</button>}
-    </div>
-  );
-};
+import Description from "./Description";
+import Options from "./Options";
+import Feedback from "./Feedback";
 
 
 const App = () => {
@@ -45,9 +19,6 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('feedback', JSON.stringify(feedback));
-  }, [feedback]);
 
   const handleFeedback = (type) => {
     setFeedback((prevFeedback) => ({
@@ -69,11 +40,10 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>Sip Happens Café</h1>
-      <p>Please leave your feedback about our service by selecting one of the options below.</p>
+      <Description />
       <Options onFeedback={handleFeedback} onReset={handleReset} hasFeedback={totalFeedback > 0} />
       {totalFeedback > 0 && (
-        <Feedback
+      <Feedback
           good={feedback.good}
           neutral={feedback.neutral}
           bad={feedback.bad}
